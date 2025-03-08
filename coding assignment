@@ -1,0 +1,43 @@
+import numpy as np
+# the function
+def f(t, y):
+    return t - y**2
+# parameters given in question
+t0, y0 = 0, 1  
+t_end = 2
+N = 10  #
+h = (t_end - t0) / N 
+
+# the Euler's Method
+def euler_method(f, t0, y0, h, N):
+    t_values = np.linspace(t0, t0 + N*h, N+1)
+    y_values = np.zeros(N+1)
+    y_values[0] = y0
+#trange of values
+    for i in range(N):
+        y_values[i+1] = y_values[i] + h * f(t_values[i], y_values[i])
+
+    return y_values[-1] 
+
+# RungeKutta 4th Order Method
+def runge_kutta_4(f, t0, y0, h, N):
+    t_values = np.linspace(t0, t0 + N*h, N+1)
+    y_values = np.zeros(N+1)
+    y_values[0] = y0
+
+    for i in range(N):
+        k1 = h * f(t_values[i], y_values[i])
+        k2 = h * f(t_values[i] + h/2, y_values[i] + k1/2)
+        k3 = h * f(t_values[i] + h/2, y_values[i] + k2/2)
+        k4 = h * f(t_values[i] + h, y_values[i] + k3)
+        y_values[i+1] = y_values[i] + (1/6) * (k1 + 2*k2 + 2*k3 + k4)
+
+    return y_values[-1]  
+
+# Compute numerical solutions
+euler_result = euler_method(f, t0, y0, h, N)
+rk4_result = runge_kutta_4(f, t0, y0, h, N)
+
+# Display results
+print("number 1 Result:", euler_result)
+print("number 2 Result:", rk4_result)
